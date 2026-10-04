@@ -1,0 +1,726 @@
+We are building a website for "Reforix Engineering Solutions" — a petroleum 
+plant engineering & drafting services company. We will build this in phases. 
+Do NOT build anything beyond what I ask in each phase.
+
+PHASE 1 TASK: Set up the project foundation only.
+
+1. TAILWIND CONFIG — Update tailwind.config.ts:
+   - Add custom colors:
+     background: '#0a0a0a'
+     surface: '#111111'
+     surface2: '#1a1a1a'
+     accent: '#E87722' (industrial orange)
+     gold: '#C0922A'
+     muted: '#A0A0A0'
+   - Add custom fontFamily: sans — use Inter via next/font
+   - Add custom animation: 'fade-up', 'fade-in', 'glow-pulse'
+   - Extend keyframes accordingly
+
+2. GLOBAL CSS — Update src/app/globals.css:
+   - Set base background to #0a0a0a
+   - Set base text color to #FFFFFF
+   - Add smooth scroll behavior to html
+   - Add a custom scrollbar style (dark track, orange thumb)
+   - Add a reusable .section-padding class: py-24 px-6 md:px-16 lg:px-24
+   - Add a reusable .orange-glow class: box-shadow with orange tint
+   - Add a reusable .text-gradient class: orange to gold gradient text
+
+3. FONTS — In src/app/layout.tsx:
+   - Import Inter from next/font/google
+   - Weights: 300, 400, 600, 700, 900
+   - Apply to body
+
+4. LAYOUT — Update src/app/layout.tsx:
+   - Set metadata: 
+     title: "Reforix Engineering Solutions"
+     description: "Inhouse Design & Drafting Services for Petroleum Plant Infrastructure"
+   - Clean minimal layout wrapper
+   - No placeholder content yet
+
+5. FOLDER STRUCTURE — Create these empty folders:
+   src/components/navbar/
+   src/components/hero/
+   src/components/stats/
+   src/components/about/
+   src/components/services/
+   src/components/projects/
+   src/components/careers/
+   src/components/contact/
+   src/components/footer/
+   src/components/ui/
+   public/images/
+
+After this phase, run npm run dev and confirm no errors. 
+Do not build any visible components yet.
+
+
+
+PHASE 2 TASK: Build the Navbar component only. Nothing else.
+
+FILE: src/components/navbar/Navbar.tsx
+
+REQUIREMENTS:
+
+1. STRUCTURE:
+   - Fixed position, full width, top-0, z-50
+   - Two states: transparent (on top of page) + dark solid bg #0a0a0a 
+     with bottom border border-orange-500/20 (on scroll)
+   - Use useEffect + useState to detect scroll position (> 50px = scrolled)
+   - Smooth transition between states (transition-all duration-300)
+
+2. LOGO (left side):
+   - Text-based for now
+   - "REFORIX" in font-black text-2xl text-accent (orange)
+   - "ENGINEERING SOLUTIONS" in text-[10px] font-light tracking-[0.3em] 
+     text-muted block below
+   - Leave a comment: // TODO: Replace with <Image> when logo.png is added to /public/
+
+3. NAV LINKS (center/right, desktop only):
+   - Links: About, Services, Projects, Careers, Contact
+   - Each is a smooth scroll anchor: href="#about" etc.
+   - Style: text-sm font-medium text-gray-400 
+     hover:text-white transition-colors duration-200
+   - Active link highlight: text-accent when section is in view 
+     (use IntersectionObserver or simple scroll tracking)
+
+4. CTA BUTTON (far right, desktop):
+   - "Get In Touch" button
+   - Style: border border-accent text-accent px-4 py-2 text-sm 
+     hover:bg-accent hover:text-white transition-all duration-200
+
+5. MOBILE MENU:
+   - Hamburger icon (use Lucide React — Menu / X icons)
+   - On click: full screen overlay menu slides down
+   - Overlay: bg-[#0a0a0a] with all nav links stacked vertically centered
+   - Each link closes the menu on click
+   - Animate open/close with Framer Motion (height or opacity)
+
+6. Import Navbar into src/app/page.tsx and render it.
+   Confirm it works before moving to next phase.
+
+
+
+   PHASE 3 TASK: Build the Hero section only. Nothing else.
+
+FILE: src/components/hero/Hero.tsx
+
+REQUIREMENTS:
+
+1. CONTAINER:
+   - Full viewport height: min-h-screen
+   - Dark background: bg-[#0a0a0a]
+   - Overflow hidden
+   - Relative positioning for layered elements
+
+2. BACKGROUND LAYER (bottom layer):
+   - Animated SVG perspective grid — like a 3D pipeline grid 
+     stretching to a vanishing point
+   - Lines should be very subtle: stroke color #E87722 at 8–12% opacity
+   - Grid fades out toward edges using a radial gradient mask
+   - Add a subtle orange radial glow at center-bottom of hero 
+     (bg radial-gradient from orange/10 to transparent)
+   - Position: absolute inset-0, z-0
+
+3. CONTENT LAYER (above background, z-10):
+   - Vertically and horizontally centered
+   - Framer Motion: staggered fade-up on mount
+     - Each child animates: y: 40 → 0, opacity: 0 → 1
+     - Stagger delay: 0.15s between each child
+
+   Content order (top to bottom):
+   a. EYEBROW TAG:
+      - Small pill: "Petroleum Plant Engineering"
+      - Style: border border-accent/40 text-accent text-xs 
+        px-3 py-1 rounded-full tracking-widest uppercase mb-6
+
+   b. MAIN HEADLINE:
+      - Line 1: "Precision Engineering." 
+        — font-black text-6xl md:text-7xl lg:text-8xl text-white
+      - Line 2: "Delivered."
+        — Same size but use .text-gradient class (orange to gold gradient)
+      - Line break between them
+
+   c. SUBHEADLINE:
+      - "Inhouse Design & Drafting Services for Petroleum Plant Infrastructure"
+      - text-lg md:text-xl text-muted font-light max-w-2xl mx-auto mt-6
+
+   d. CTA BUTTONS (row, gap-4, mt-10):
+      Button 1: "Explore Our Work"
+        - bg-accent text-white px-8 py-4 font-semibold
+        - hover: brightness-110 + slight scale-105
+        - href="#projects"
+      Button 2: "Contact Us"
+        - border border-white/30 text-white px-8 py-4 font-semibold
+        - hover: border-accent text-accent
+        - href="#contact"
+
+4. SCROLL INDICATOR (bottom center, absolute):
+   - Animated bouncing chevron-down icon (Lucide)
+   - text-muted, small, subtle
+   - Framer Motion: y bounce animation looping
+
+5. Import Hero into src/app/page.tsx below Navbar.
+   Test and confirm full screen hero renders correctly.
+
+
+   PHASE 4 TASK: Build the Stats Bar section only. Nothing else.
+
+FILE: src/components/stats/StatsBar.tsx
+
+REQUIREMENTS:
+
+1. CONTAINER:
+   - id="stats"
+   - Full width section
+   - Background: bg-[#111111] with top and bottom border: 
+     border-y border-white/5
+   - Padding: py-16 px-6 md:px-16 lg:px-24
+
+2. GRID LAYOUT:
+   - 4 stats in a row on desktop: grid-cols-2 md:grid-cols-4
+   - Each stat separated by a subtle right border (except last): 
+     border-r border-white/10
+
+3. STATS DATA (hardcoded):
+   1. Number: "15+"  | Label: "Projects Delivered"
+   2. Number: "5+"   | Label: "Years of Experience"
+   3. Number: "3+"   | Label: "Industries Served"
+   4. Number: "100%" | Label: "On-Time Delivery"
+
+4. EACH STAT ITEM:
+   - Centered (text-center)
+   - Number: text-4xl md:text-5xl font-black text-accent
+   - Label: text-sm text-muted font-light mt-2 tracking-wide uppercase
+
+5. COUNTER ANIMATION:
+   - Use Framer Motion useInView to trigger when section enters viewport
+   - Numbers count up from 0 to their value over 2 seconds
+   - Use a custom useCountUp hook:
+     FILE: src/components/ui/useCountUp.ts
+     - Takes: (end: number, duration: number, trigger: boolean)
+     - Returns: current animated number value
+
+6. ENTRANCE ANIMATION:
+   - When section enters view: each stat fades in and slides up
+   - Stagger: 0.1s between each stat
+
+7. Import StatsBar into src/app/page.tsx below Hero.
+
+
+
+
+PHASE 5 TASK: Build the About section only. Nothing else.
+
+FILE: src/components/about/About.tsx
+
+REQUIREMENTS:
+
+1. CONTAINER:
+   - id="about"
+   - section-padding class
+   - Background: bg-[#0a0a0a]
+
+2. LAYOUT: 
+   - Two column grid on desktop: grid-cols-1 lg:grid-cols-2 gap-16
+   - Left column: heading + accent line
+   - Right column: body content
+
+3. LEFT COLUMN:
+   - Overline: "WHO WE ARE" — text-xs tracking-[0.3em] text-accent uppercase mb-4
+   - Main heading: "Built for the\nDemands of\nIndustry."
+     — font-black text-5xl md:text-6xl text-white leading-tight
+   - Orange accent vertical bar: 
+     w-1 h-16 bg-accent mt-8 (decorative line below heading)
+   - Framer Motion: fade in from left on scroll
+
+4. RIGHT COLUMN:
+   - Paragraph 1: 
+     "Reforix Engineering Solutions is a specialized engineering firm 
+     providing inhouse design and drafting services tailored for 
+     petroleum plant infrastructure. We combine deep industry knowledge 
+     with cutting-edge design tools to deliver precise, reliable, 
+     and efficient solutions."
+   
+   - Paragraph 2:
+     "Our team of experienced engineers and drafters operates across 
+     the full design lifecycle — from initial layout planning to 
+     detailed 3D modeling and final documentation — ensuring every 
+     project meets the highest standards of accuracy and compliance."
+
+   - Style: text-muted font-light text-lg leading-relaxed space-y-6
+
+   - EXPERTISE TAGS below paragraphs (mt-8):
+     Tags: AutoCAD Plant 3D | AutoCAD 2D | Navisworks | Mechanical Design | Plant Layout
+     Style: inline-flex items-center gap-2 border border-white/10 
+            text-xs text-muted px-3 py-1.5 rounded-sm mr-2 mb-2
+            hover:border-accent hover:text-accent transition-colors
+
+   - Framer Motion: fade in from right on scroll (slight delay)
+
+5. DIVIDER below section:
+   - Full width horizontal line: border-t border-white/5
+
+6. Import About into src/app/page.tsx below StatsBar.
+
+
+
+PHASE 6 TASK: Build the Services section only. Nothing else.
+
+FILE: src/components/services/Services.tsx
+
+REQUIREMENTS:
+
+1. CONTAINER:
+   - id="services"
+   - section-padding class
+   - Background: bg-[#0a0a0a]
+
+2. SECTION HEADER (centered, mb-16):
+   - Overline: "WHAT WE DO" — text-xs tracking-[0.3em] text-accent uppercase
+   - Heading: "Our Capabilities"
+     — font-black text-5xl md:text-6xl text-white mt-3
+   - Subtext: "Specialized design and drafting services for petroleum 
+     plant engineering"
+     — text-muted text-lg font-light mt-4 max-w-xl mx-auto
+
+3. SERVICES GRID:
+   - 3x2 grid: grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6
+
+4. SERVICE CARDS DATA:
+   1. Icon: Layers      | Title: "AutoCAD Plant 3D"
+      Desc: "Full 3D plant modeling and design for petroleum and 
+      process facilities using AutoCAD Plant 3D."
+
+   2. Icon: PenTool     | Title: "AutoCAD 2D Drafting"  
+      Desc: "High-precision 2D engineering drawings, schematics, 
+      and technical layouts."
+
+   3. Icon: Settings    | Title: "Mechanical Design"
+      Desc: "Detailed mechanical component and system design for 
+      plant equipment and infrastructure."
+
+   4. Icon: Eye         | Title: "Navisworks Review"
+      Desc: "Clash detection, model coordination and project review 
+      using Autodesk Navisworks."
+
+   5. Icon: Layout      | Title: "Plant Layout Design"
+      Desc: "Optimized facility and equipment layout planning for 
+      petroleum plant environments."
+
+   6. Icon: FileText    | Title: "As-Built Documentation"
+      Desc: "Accurate and complete as-built drawings and 
+      documentation for existing plant structures."
+
+5. EACH CARD STYLE:
+   - Background: bg-[#111111]
+   - Border: border border-white/5
+   - Padding: p-8
+   - Hover: border-accent/50, bg-[#141414], translateY(-4px)
+   - Transition: all 300ms ease
+
+   Card internals:
+   - Icon container: w-12 h-12 bg-accent/10 rounded-sm 
+     flex items-center justify-center mb-6
+   - Icon: text-accent, size 22
+   - Title: font-bold text-xl text-white mb-3
+   - Description: text-muted font-light text-sm leading-relaxed
+   - Bottom accent line: w-8 h-0.5 bg-accent mt-6 
+     (scales to w-16 on hover, transition-all)
+
+6. ANIMATIONS:
+   - Cards stagger fade-up when section enters view
+   - Stagger delay: 0.08s per card
+   - Use Framer Motion useInView with once: true
+
+7. Import Services into src/app/page.tsx below About.
+
+
+
+
+PHASE 7 TASK: Build the Projects/Portfolio section only. Nothing else.
+
+FILE: src/components/projects/Projects.tsx
+
+REQUIREMENTS:
+
+1. CONTAINER:
+   - id="projects"
+   - section-padding class
+   - Background: bg-[#080808]
+
+2. SECTION HEADER (mb-16):
+   - Overline: "OUR WORK" — text-xs tracking-[0.3em] text-accent uppercase
+   - Heading: "Projects That\nSpeak For Themselves."
+     — font-black text-5xl md:text-6xl text-white mt-3
+
+3. FEATURED PROJECT CARD (large):
+   LAYOUT: Two column on desktop — grid-cols-1 lg:grid-cols-5 gap-0
+   
+   LEFT (lg:col-span-3) — Visual panel:
+   - Background: bg-[#111111] 
+   - Min height: min-h-[400px]
+   - Industrial background pattern: 
+     subtle repeating SVG pipe/grid pattern (inline SVG, very low opacity)
+   - Large "01" number: absolute top-8 right-8, 
+     font-black text-8xl text-white/5 (watermark style)
+   - Centered content:
+     Large icon — Factory or Building2 from Lucide, 
+     text-accent/30, size 120, centered
+   - Orange corner accent: absolute bottom-0 left-0 
+     w-1 h-full bg-accent (left border bar)
+
+   RIGHT (lg:col-span-2) — Info panel:
+   - Background: bg-[#141414]
+   - Padding: p-10 flex flex-col justify-between
+   - Top section:
+     - Tag: "FEATURED PROJECT" — text-xs text-accent tracking-widest
+     - Client: "Tanfac Industries" — font-black text-3xl text-white mt-4
+     - Description: 
+       "Comprehensive design and drafting services for petroleum 
+       plant facility. Scope included full 3D plant modeling, 
+       equipment layout planning, mechanical documentation, 
+       and Navisworks clash detection review."
+       — text-muted text-sm font-light leading-relaxed mt-4
+   - Middle section (tech tags, mt-6):
+     Tags: AutoCAD Plant 3D | Navisworks | Mechanical Design | Layout Planning
+     Style: text-xs border border-accent/30 text-accent/80 
+            px-2 py-1 rounded-sm mr-2 mb-2
+   - Bottom section:
+     - Divider: border-t border-white/5 pt-6 mt-6
+     - "Delivered Successfully" with CheckCircle icon in accent color
+
+4. COMING SOON ROW (below featured card, mt-12):
+   - Text: "More case studies coming soon"
+   - Style: text-center text-muted text-sm tracking-wide
+   - Subtle animated dots (…) using Framer Motion
+
+5. ANIMATIONS:
+   - Featured card: fade in + slight scale (0.97 → 1) on scroll
+   - Info panel: slide in from right with slight delay
+
+6. Import Projects into src/app/page.tsx below Services.
+
+
+
+
+PHASE 8 TASK: Build the Careers section only. Nothing else.
+
+FILE: src/components/careers/Careers.tsx
+
+REQUIREMENTS:
+
+1. CONTAINER:
+   - id="careers"
+   - section-padding class
+   - Background: bg-[#0a0a0a]
+
+2. SECTION HEADER (mb-16):
+   - Overline: "JOIN US" — text-xs tracking-[0.3em] text-accent uppercase
+   - Heading: "Build With\nThe Best."
+     — font-black text-5xl md:text-6xl text-white mt-3
+   - Subtext: "We're always looking for talented engineers and designers 
+     who are passionate about precision."
+     — text-muted text-lg font-light mt-4 max-w-xl
+
+3. ROLES DATA (3 cards):
+   1. Title: "CAD Designer"
+      Type: "Full Time"
+      Requirements: 
+        - Proficiency in AutoCAD 2D and Plant 3D
+        - Experience with petroleum plant drawings
+        - Strong attention to detail
+      Location: "Parsik Nagar, Navi Mumbai"
+
+   2. Title: "Plant Design Engineer"
+      Type: "Full Time"
+      Requirements:
+        - 1-3 years plant design experience
+        - AutoCAD Plant 3D & Navisworks skills
+        - Knowledge of petroleum facility standards
+      Location: "Parsik Nagar, Navi Mumbai"
+
+   3. Title: "Mechanical Draftsman"
+      Type: "Full Time"
+      Requirements:
+        - AutoCAD Mechanical proficiency
+        - Reading and creating mechanical drawings
+        - Familiarity with engineering symbols and standards
+      Location: "Parsik Nagar, Navi Mumbai"
+
+4. EACH ROLE CARD STYLE:
+   - Background: bg-[#111111]
+   - Border: border border-white/5
+   - Padding: p-8
+   - Layout: flex flex-col justify-between h-full
+
+   Card internals:
+   - Top row: Role title (font-bold text-xl text-white) + 
+     Type badge ("Full Time" — text-xs bg-accent/10 text-accent 
+     px-2 py-1 rounded-sm)
+   - Location row: MapPin icon (Lucide, size 14, text-muted) + 
+     location text (text-sm text-muted) — mt-2
+   - Divider: border-t border-white/5 my-6
+   - Requirements list: 
+     Each item: CheckCircle2 icon (size 14, text-accent) + text-sm text-muted
+     space-y-2
+   - Apply button (bottom, mt-8):
+     href="mailto:info@reforix.com?subject=Application: [Role Title]"
+     Text: "Apply Now →"
+     Style: w-full text-center py-3 border border-accent/50 text-accent 
+            text-sm font-medium hover:bg-accent hover:text-white 
+            transition-all duration-200
+
+5. GRID: grid-cols-1 md:grid-cols-3 gap-6
+
+6. BOTTOM NOTE (mt-12, text-center):
+   - "Don't see your role? Send your CV to info@reforix.com"
+   - Style: text-muted text-sm
+   - Email part: text-accent underline, mailto link
+
+7. ANIMATIONS:
+   - Cards stagger fade-up on scroll
+   - 0.1s stagger delay
+
+8. Import Careers into src/app/page.tsx below Projects.
+
+
+
+
+PHASE 9 TASK: Build the Contact section only. Nothing else.
+
+FILE: src/components/contact/Contact.tsx
+
+REQUIREMENTS:
+
+1. CONTAINER:
+   - id="contact"
+   - section-padding class
+   - Background: bg-[#080808]
+
+2. SECTION HEADER (mb-16):
+   - Overline: "GET IN TOUCH" — text-xs tracking-[0.3em] text-accent uppercase
+   - Heading: "Let's Work\nTogether."
+     — font-black text-5xl md:text-6xl text-white mt-3
+
+3. LAYOUT: Two column on desktop — grid-cols-1 lg:grid-cols-2 gap-16
+
+4. LEFT COLUMN — Contact Info:
+   
+   a. Intro text:
+      "Have a project in mind? We'd love to hear about it. 
+      Reach out and our team will get back to you promptly."
+      — text-muted text-lg font-light leading-relaxed mb-12
+
+   b. Contact detail items (space-y-8):
+      Each item: icon + label + value layout
+
+      Item 1:
+      - Icon: Mail (Lucide, text-accent)
+      - Label: "Email Us" (text-xs text-muted uppercase tracking-widest)
+      - Value: "info@reforix.com" (text-white font-medium, mailto link)
+
+      Item 2:
+      - Icon: MapPin (Lucide, text-accent)
+      - Label: "Our Office" (text-xs text-muted uppercase tracking-widest)
+      - Value: "Building 16, Vastu Anand, Parsik Nagar" (text-white font-medium)
+
+      Item 3:
+      - Icon: Clock (Lucide, text-accent)
+      - Label: "Working Hours" (text-xs text-muted uppercase tracking-widest)
+      - Value: "Monday – Saturday, 9:00 AM – 6:00 PM" (text-white font-medium)
+
+   c. Each item has: 
+      - Left orange bar accent: w-0.5 h-full bg-accent absolute left-0
+      - pl-4 relative
+
+5. RIGHT COLUMN — Contact Form:
+   - Background: bg-[#111111] border border-white/5 p-8 rounded-sm
+
+   FIELDS (space-y-6):
+   a. Name field:
+      - Label: "Your Name" (text-xs text-muted uppercase tracking-widest mb-2)
+      - Input: full width, bg-[#1a1a1a] border border-white/10 
+        text-white px-4 py-3 text-sm
+        focus: outline-none border-accent transition-colors
+        placeholder: "John Doe"
+
+   b. Email field:
+      - Label: "Email Address"
+      - Input: type="email", same styling
+        placeholder: "you@company.com"
+
+   c. Company field:
+      - Label: "Company / Organization"
+      - Input: same styling
+        placeholder: "Your Company Name"
+
+   d. Message field:
+      - Label: "Your Message"
+      - Textarea: rows=5, same styling as inputs, resize-none
+        placeholder: "Tell us about your project..."
+
+   e. Submit button:
+      - Full width
+      - Text: "Send Message"
+      - Style: bg-accent text-white py-4 font-semibold text-sm 
+        tracking-wide hover:brightness-110 transition-all
+      - Add Send icon (Lucide) inline on right side
+
+   FORM BEHAVIOR:
+   - Use useState for form fields
+   - On submit: preventDefault, show inline success message
+     "✓ Message sent! We'll be in touch shortly." in accent color
+   - No actual backend needed — just UI state
+
+6. ANIMATIONS:
+   - Left column: fade in from left
+   - Right column: fade in from right
+   - Slight delay on right
+
+7. Import Contact into src/app/page.tsx below Careers.
+
+
+
+
+
+
+PHASE 10 TASK: Build the Footer component only. Nothing else.
+
+FILE: src/components/footer/Footer.tsx
+
+REQUIREMENTS:
+
+1. CONTAINER:
+   - Background: bg-[#050505]
+   - Border top: border-t border-white/5
+   - Padding: pt-16 pb-8 px-6 md:px-16 lg:px-24
+
+2. TOP ROW (grid-cols-1 md:grid-cols-3 gap-12, pb-12, 
+   border-b border-white/5):
+
+   LEFT — Brand block:
+   - Logo: "REFORIX" font-black text-2xl text-accent
+     "ENGINEERING SOLUTIONS" text-[10px] tracking-[0.3em] text-muted
+   - Tagline below (mt-4): 
+     "Engineering the Future of\nPetroleum Infrastructure."
+     — text-muted text-sm font-light leading-relaxed max-w-xs
+   - // TODO: Replace text logo with <Image> when logo added
+
+   CENTER — Quick Links:
+   - Heading: "Navigation" — text-xs text-muted uppercase tracking-widest mb-4
+   - Links: About, Services, Projects, Careers, Contact
+   - Style: text-sm text-gray-500 hover:text-white 
+     transition-colors block mb-2
+
+   RIGHT — Contact Info:
+   - Heading: "Contact" — text-xs text-muted uppercase tracking-widest mb-4
+   - Email: info@reforix.com (text-sm text-gray-500, mailto link)
+   - Address: Building 16, Vastu Anand, Parsik Nagar 
+     (text-sm text-gray-500, mt-2)
+   - Social icons row (mt-6):
+     LinkedIn icon (Lucide) — placeholder href="#"
+     Style: w-8 h-8 border border-white/10 flex items-center 
+     justify-center text-muted hover:border-accent hover:text-accent 
+     transition-all
+
+3. BOTTOM ROW (pt-8, flex justify-between items-center, flex-wrap gap-4):
+   - Left: "© 2025 Reforix Engineering Solutions. All rights reserved."
+     — text-xs text-gray-600
+   - Right: "Designed with precision." — text-xs text-gray-700 italic
+
+4. SUBTLE BACKGROUND DETAIL:
+   - Very faint large "REFORIX" text watermark centered in footer
+   - font-black text-[8rem] text-white/[0.02] absolute centered
+   - pointer-events-none, select-none
+
+5. Import Footer into src/app/page.tsx at the bottom.
+
+
+
+
+
+
+
+
+PHASE 11 TASK: Final polish pass. No new sections. 
+Enhance existing components only.
+
+1. PAGE TRANSITIONS:
+   - Wrap entire page content in a Framer Motion 
+     initial={{ opacity: 0 }} animate={{ opacity: 1 }} 
+     transition={{ duration: 0.5 }} div
+
+2. CURSOR GLOW (optional but impressive):
+   FILE: src/components/ui/CursorGlow.tsx
+   - Custom cursor: large soft orange/amber radial glow (200px)
+   - Follows mouse position using useMotionValue + useSpring
+   - Opacity: 0.06–0.08 (very subtle)
+   - pointer-events-none, fixed, z-0
+   - Add to layout.tsx
+
+3. SECTION DIVIDERS:
+   - Between each major section add a 
+     subtle full-width divider: border-t border-white/[0.04]
+
+4. SCROLL PROGRESS BAR:
+   FILE: src/components/ui/ScrollProgress.tsx
+   - Fixed top-0, full width, h-[2px], z-50
+   - Background: bg-accent
+   - Width driven by Framer Motion useScroll → scaleX transform
+   - Add to layout.tsx
+
+5. META & SEO (update src/app/layout.tsx):
+   - Add Open Graph tags:
+     og:title: "Reforix Engineering Solutions"
+     og:description: "Inhouse Design & Drafting Services for 
+     Petroleum Plant Infrastructure"
+     og:type: "website"
+   - Add keywords meta: 
+     "petroleum plant design, AutoCAD Plant 3D, engineering drafting, 
+     Navisworks, plant layout, mechanical design India"
+   - Add favicon: create a simple orange "R" favicon 
+     at /app/favicon.ico (or use a placeholder)
+
+6. PERFORMANCE:
+   - Ensure all Framer Motion animations use once: true in useInView
+   - Add loading="lazy" to any images
+   - Ensure no layout shift on page load
+
+7. MOBILE FINAL CHECK:
+   - Test all sections at 375px width
+   - Fix any overflow issues
+   - Ensure touch targets are minimum 44px
+   - Ensure hero text doesn't overflow on small screens
+
+8. FINAL: Run npm run build and fix any TypeScript or 
+   build errors that appear.
+
+
+
+
+   PHASE 12 TASK: Integrate the actual Reforix logo.
+
+1. Add logo file to /public/logo.png (already done by user)
+
+2. In src/components/navbar/Navbar.tsx:
+   - Remove text-based logo
+   - Replace with Next.js <Image> component:
+     src="/logo.png"
+     alt="Reforix Engineering Solutions"
+     width={140} height={40}
+     priority
+   - Ensure it looks good on both transparent and dark navbar states
+   - If logo has dark background, add a version check or 
+     add drop-shadow filter
+
+3. In src/components/footer/Footer.tsx:
+   - Same replacement — text logo → <Image>
+   - width={120} height={34}
+
+4. Test at all screen sizes. Confirm logo is crisp and correctly sized.
+
+
+
+
+
+
