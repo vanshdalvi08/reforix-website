@@ -27,6 +27,14 @@ There is no test suite configured in this repo.
 
 **Component organization** (`src/components/`): one folder per section (`navbar/`, `hero/`, `identity/`, `experience/`, `projects/`, `contact/`, `services/`, `careers/`, `stats/`, `footer/`, `ui/`), each holding a single PascalCase component file. Several folders (`about/`, `footer/`) currently contain only a `.gitkeep` — not yet built. Note `src/app/page.tsx` does not import every existing component (e.g. `StatsBar` exists but isn't wired into the homepage) — check `page.tsx` before assuming a component is live.
 
+**Homepage (`/`) — the scroll-driven landing page:** `src/app/page.tsx` renders only components from `src/components/landing/`, wrapped in `<main className="rx">`. It does not use Tailwind or the older section components (`hero/`, `identity/`, `experience/`, `projects/`, `contact/`, `stats/`), which are now unused on `/` but kept; `/services` and `/careers` still use `Navbar`, `Services`, `Careers` and `Footer`.
+- Styles: `src/app/landing.css`, one nested block scoped under `.rx` so nothing leaks into other routes. Its tokens (`--accent`, `--bone`, pipe-service colours `--c-proc`, `--c-stm`, …) live on `.rx`. Phone breakpoint is 820px and must match `isNarrow()` in `landing/motion.ts`.
+- Fonts: Bebas Neue and JetBrains Mono are loaded in `layout.tsx` as `--font-bebas` / `--font-jbmono`.
+- Motion uses **anime.js v4** (`animate`, `createTimeline`, `onScroll`, `svg.createDrawable`), not Framer Motion. Every effect returns a cleanup that reverts its animations, and checks `prefersReducedMotion()`.
+- `landing/plantScene.ts` builds the three.js plant (plain three, not react-three-fiber). One anime.js timeline scrubbed by scroll through the `.stage` element drives a state object `S`; the draw loop reads `S`. Layers, explode offsets, clash points and camera keyframes are all defined in that file. The canvas is `position: fixed` and stays behind the whole page.
+- `Preloader` locks scroll, plays the logo intro, then calls `markIntroDone()`; `PlantHero` waits for that before animating the first headline.
+- The drawings in the projects gallery (`landing/drawings.ts`) and its clash table are illustrative samples, and both forms only show a message. Each is marked with a TODO.
+
 **Styling — Tailwind v4, CSS-first config:** there is no `tailwind.config.ts`. Theme tokens (colors, fonts, animations) are defined directly in `src/app/globals.css` via `@theme`. Design tokens:
 - Colors: `background` #0a0a0a, `surface` #111111, `surface2` #1a1a1a, `accent` #E87722 (industrial orange), `gold` #C0922A, `muted` #A0A0A0
 - Reusable utility classes: `.section-padding` (standard section gutter), `.orange-glow`, `.text-gradient` (orange→gold), `.no-scrollbar`

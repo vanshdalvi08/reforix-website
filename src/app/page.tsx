@@ -1,23 +1,32 @@
-import Navbar from "@/components/navbar/Navbar";
-import Hero from "@/components/hero/Hero";
-import StatsBar from "@/components/stats/StatsBar";
-import IdentitySection from "@/components/identity/IdentitySection";
-import Experience from "@/components/experience/Experience";
-import Projects from "@/components/projects/Projects";
-import Contact from "@/components/contact/Contact";
-import Footer from "@/components/footer/Footer";
+import "./landing.css";
+import Preloader from "@/components/landing/Preloader";
+import CursorFx from "@/components/landing/CursorFx";
+import LandingNav from "@/components/landing/LandingNav";
+import PlantHero from "@/components/landing/PlantHero";
+import StatsStrip from "@/components/landing/StatsStrip";
+import AboutSection from "@/components/landing/AboutSection";
+import ServicesSection from "@/components/landing/ServicesSection";
+import ProcessSection from "@/components/landing/ProcessSection";
+import ProjectsGallery from "@/components/landing/ProjectsGallery";
+import CareersSection from "@/components/landing/CareersSection";
+import ContactSection from "@/components/landing/ContactSection";
+import LandingFooter from "@/components/landing/LandingFooter";
 
 export default function Home() {
   return (
-    <main>
-      <Navbar />
-      <Hero />
-      <StatsBar />
-      <IdentitySection />
-      <Experience />
-      <Projects />
-      <Contact />
-      <Footer />
+    <main className="rx">
+      <Preloader />
+      <CursorFx />
+      <LandingNav />
+      <PlantHero />
+      <StatsStrip />
+      <AboutSection />
+      <ServicesSection />
+      <ProcessSection />
+      <ProjectsGallery />
+      <CareersSection />
+      <ContactSection />
+      <LandingFooter />
     </main>
   );
 }
