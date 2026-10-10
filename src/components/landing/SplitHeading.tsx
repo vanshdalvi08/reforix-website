@@ -24,7 +24,24 @@ export default function SplitHeading({ as: Tag = "h2", className, children }: Sp
       ease: "outExpo",
       autoplay: onScroll({ target: el, enter: "bottom-=60 top" }),
     });
+
+    // The scroll trigger only fires when the headline crosses the line. If the page opens part way
+    // down (a reload, a restored scroll position, a link into a section) it never crosses, so show
+    // any headline that is already on screen or above it once scrolling settles.
+    let settle = 0;
+    const showIfPassed = () => {
+      if (!rise.began && el.getBoundingClientRect().top < window.innerHeight - 60) rise.complete();
+    };
+    const onScrollSettled = () => {
+      window.clearTimeout(settle);
+      settle = window.setTimeout(showIfPassed, 350);
+    };
+    settle = window.setTimeout(showIfPassed, 900);
+    window.addEventListener("scroll", onScrollSettled, { passive: true });
+
     return () => {
+      window.clearTimeout(settle);
+      window.removeEventListener("scroll", onScrollSettled);
       rise.revert();
     };
   }, []);
